@@ -7,7 +7,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const isProd = process.env.NODE_ENV === 'production'
 const isDev = !isProd
 
-const filename = ext => {
+const filename = (ext) => {
   const result = isDev ? `bundle.${ext}` : `bundle.[hash].${ext}`
   console.log(`FileName : ${result}`)
   return result
@@ -18,7 +18,8 @@ const jsLoaders = () => {
     {
       loader: 'babel-loader',
       options: {
-        presets: ['@babel/preset-env']
+        presets: ['@babel/preset-env'],
+        plugins: ['@babel/plugin-proposal-class-properties']
       }
     }
   ]
@@ -32,7 +33,7 @@ const jsLoaders = () => {
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
-  mode: process.env.NODE_ENV, 
+  mode: process.env.NODE_ENV,
   entry: ['@babel/polyfill', './index.js'],
   output: {
     filename: filename('js'),
@@ -42,7 +43,7 @@ module.exports = {
     extensions: ['.js'],
     alias: {
       '@': path.resolve(__dirname, 'src'),
-      '@/core': path.resolve(__dirname, 'src/core')
+      '@core': path.resolve(__dirname, 'src/core')
     }
   },
   devServer: {
@@ -54,16 +55,16 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: 'index.html', 
+      template: 'index.html',
       minify: {
         removeComments: isProd,
         collapseWhitespace: isProd
-      } 
+      }
     }),
     new CopyPlugin({
       patterns: [
-        { 
-          from: path.resolve(__dirname, 'src/favicon.ico'), 
+        {
+          from: path.resolve(__dirname, 'src/favicon.ico'),
           to: path.resolve(__dirname, 'dist')
         },
       ],
