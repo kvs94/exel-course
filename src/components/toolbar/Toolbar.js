@@ -1,6 +1,6 @@
-import {ExcelCompoenet} from '@core/ExcelComponent'
+import {ExcelComponet} from '@core/ExcelComponent'
 
-export class Toolbar extends ExcelCompoenet {
+export class Toolbar extends ExcelComponet {
   static className = 'excel__toolbar'
 
   constructor($root) {
