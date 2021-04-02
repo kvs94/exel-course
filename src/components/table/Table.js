@@ -3,6 +3,7 @@ import {createTable} from './table.template'
 import {TableSelection} from './TableSelection'
 import {resizeHandler} from './talbe.resize'
 import {shouldResize, isCell, nextSelector, matrix} from './table.functions'
+import * as actions from '@/redux/actions'
 import {$} from '@core/dom'
 
 
@@ -18,7 +19,7 @@ export class Table extends ExcelComponet {
   }
 
   toHTML() {
-    return createTable(50)
+    return createTable(50, this.store.getState())
   }
 
   prepare() {
@@ -33,6 +34,7 @@ export class Table extends ExcelComponet {
 
     this.$on('formula:input', text => {
       this.selection.current.text(text)
+      this.updateTextInStore(text)
     })
 
     this.$on('formula:done', _ => {
@@ -45,9 +47,18 @@ export class Table extends ExcelComponet {
     this.$emit('table:select', $cell)
   }
 
+  async resizeTable(event) {
+    try {
+      const data = await resizeHandler(this.$root, event)
+      this.$dispatch(actions.tableResize(data))
+    } catch (e) {
+      console.warn('Resize error', e.message);
+    }
+  }
+
   onMousedown(event) {
     if (shouldResize(event)) {
-      resizeHandler(this.$root, event)
+      this.resizeTable(event)
     }
     if (isCell(event)) {
       const $target = $(event.target)
@@ -58,7 +69,7 @@ export class Table extends ExcelComponet {
 
         this.selection.selectGroup($cells)
       } else {
-        this.selection.select($target)
+        this.selectCell($target)
       }
     }
   }
@@ -83,7 +94,14 @@ export class Table extends ExcelComponet {
     }
   }
 
+  updateTextInStore(value) {
+    this.$dispatch(actions.changeText({
+      id: this.selection.current.id(),
+      value
+    }))
+  }
+
   onInput(event) {
-    this.$emit('table:input', $(event.target))
+    this.updateTextInStore($(event.target).text())
   }
 }
