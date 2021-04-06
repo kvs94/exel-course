@@ -1,5 +1,5 @@
-import {$} from '@/core/dom';
-import {ExcelComponet} from '@core/ExcelComponent'
+import {ExcelComponet} from '@/core/ExcelComponent'
+import {$} from '@core/dom'
 
 export class Formula extends ExcelComponet {
   static className = 'excel__formula'
@@ -15,7 +15,7 @@ export class Formula extends ExcelComponet {
 
   toHTML() {
     return `
-      <div class="info">fx</div>    
+      <div class="info">fx</div>
       <div id="formula" class="input" contenteditable spellcheck="false"></div>
     `
   }
@@ -30,7 +30,7 @@ export class Formula extends ExcelComponet {
     })
   }
 
-  storeChanged(currentText) {
+  storeChanged({currentText}) {
     this.$formula.text(currentText)
   }
 
@@ -40,8 +40,7 @@ export class Formula extends ExcelComponet {
 
   onKeydown(event) {
     const keys = ['Enter', 'Tab']
-
-    if (keys.includes(event.Key)) {
+    if (keys.includes(event.key)) {
       event.preventDefault()
       this.$emit('formula:done')
     }

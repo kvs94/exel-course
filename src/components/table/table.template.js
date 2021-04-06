@@ -28,13 +28,14 @@ function toCell(state, row) {
       ...defaultStyles,
       ...state.stylesState[id]
     })
-    return ` 
-      <div class="cell" 
+    return `
+      <div 
+        class="cell" 
         contenteditable 
-        data-col="${col}" 
+        data-col="${col}"
         data-type="cell"
         data-id="${id}"
-        data-value="${data} || ''"
+        data-value="${data || ''}"
         style="${styles}; width: ${width}"
       >${parse(data) || ''}</div>
     `

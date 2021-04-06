@@ -10,7 +10,6 @@ class Dom {
       this.$el.innerHTML = html
       return this
     }
-
     return this.$el.outerHTML.trim()
   }
 
@@ -19,11 +18,9 @@ class Dom {
       this.$el.textContent = text
       return this
     }
-
     if (this.$el.tagName.toLowerCase() === 'input') {
       return this.$el.value.trim()
     }
-
     return this.$el.textContent.trim()
   }
 
@@ -58,16 +55,16 @@ class Dom {
     return this
   }
 
+  get data() {
+    return this.$el.dataset
+  }
+
   closest(selector) {
     return $(this.$el.closest(selector))
   }
 
   getCoords() {
     return this.$el.getBoundingClientRect()
-  }
-
-  get data() {
-    return this.$el.dataset
   }
 
   findAll(selector) {
@@ -110,7 +107,6 @@ class Dom {
       this.$el.setAttribute(name, value)
       return this
     }
-
     return this.$el.getAttribute(name)
   }
 
@@ -131,10 +127,8 @@ export function $(selector) {
 
 $.create = (tagName, classes = '') => {
   const el = document.createElement(tagName)
-
   if (classes) {
     el.classList.add(classes)
   }
-
   return $(el)
 }
