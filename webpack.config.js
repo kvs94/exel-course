@@ -9,7 +9,6 @@ const isDev = !isProd
 
 const filename = (ext) => {
   const result = isDev ? `bundle.${ext}` : `bundle.[hash].${ext}`
-  console.log(`FileName : ${result}`)
   return result
 }
 
